@@ -1,22 +1,14 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './Message.scss';
 
-class Message extends Component {
-    constructor(props) {
-        super(props);
-        let temp = JSON.parse(this.props.message);
-        this.state = {
-            message: temp
-        }
-    }
+const Message = (props) => {
+    const temp = JSON.parse(props.message)
+    const [message] = useState(temp);
 
-    render() {
-        return (
-            <div className='Message'>
-                {this.state.message.body}
-            </div>
-        );
-    };
+    return (
+        <div className="">
+            {message.body}
+        </div>)
 
 }
 

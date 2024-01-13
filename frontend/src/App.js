@@ -1,44 +1,38 @@
-import React, { Component } from 'react';
-import Header from './components/Header/Header';
-import ChatHistory from './components/ChatHistory/ChatHistory';
-import ChatInput from './components/ChatInput/ChatInput';
-import './App.css';
-import { connect, sendMsg } from './api';
+import React, { useEffect, useState } from "react";
+import Header from "./components/Header/Header";
+import ChatHistory from "./components/ChatHistory/ChatHistory";
+import ChatInput from "./components/ChatInput/ChatInput";
+import "./App.css";
+import { connect, sendMsg } from "./api";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      chatHistory: []
-    }
-  }
+const App = () => {
+  const [chatHistory, setChatHistory] = useState([]);
 
-  componentDidMount() {
+  useEffect(() => {
     connect((msg) => {
-      console.log("New Message")
-      this.setState(prevState => ({
-        chatHistory: [...prevState.chatHistory, msg]
-      }))
-      console.log(this.state);
+      console.log("New Message");
+      setChatHistory((prevHistory) => [...prevHistory, msg]);
+      console.log(chatHistory);
     });
-  }
+  }, []);
 
-  send(event) {
+  /**
+   *
+   * @param {KeyboardEvent} event
+   */
+  const send = (event) => {
     if (event.keyCode === 13) {
       sendMsg(event.target.value);
       event.target.value = "";
     }
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Header />
-        <ChatHistory chatHistory={this.state.chatHistory} />
-        <ChatInput send={this.send} />
-      </div>
-    );
-  }
-}
+  };
+  return (
+    <div className="App">
+      <Header />
+      <ChatHistory chatHistory={chatHistory} />
+      <ChatInput send={send} />
+    </div>
+  );
+};
 
 export default App;
