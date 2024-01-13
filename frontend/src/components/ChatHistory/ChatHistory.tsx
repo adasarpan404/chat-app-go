@@ -2,7 +2,11 @@ import React from 'react';
 import './ChatHistory.scss';
 import Message from '../Message/Message';
 
-const ChatHistory = (props) => {
+interface ChatHistoryProps {
+    chatHistory: { timeStamp: number; data: string }[];
+}
+
+const ChatHistory: React.FC<ChatHistoryProps> = (props) => {
     console.log(props.chatHistory);
     const messages = props.chatHistory.map((msg) => (
         <Message key={msg.timeStamp} message={msg.data} />

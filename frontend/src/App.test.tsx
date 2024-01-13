@@ -1,11 +1,10 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
+import "@testing-library/jest-dom/extend-expect";
 
 import App from "./App";
-import * as api from "./api"; // Import the api module for mocking
+import * as api from "./api";
 
-// Mock the api module
 jest.mock("./api", () => ({
   connect: jest.fn(),
   sendMsg: jest.fn(),
@@ -25,12 +24,12 @@ describe("App Component", () => {
     render(<App />);
 
     // Mock the connect function to provide the expected message
-    api.connect.mockImplementation((callback) => {
-      callback({ data: "Test Message" });
+    (api.connect as jest.Mock).mockImplementation((callback: (event: MessageEvent<any>) => void) => {
+      callback({ data: "Test Message" } as MessageEvent<any>);
     });
 
     // Mock the sendMsg function
-    api.sendMsg.mockImplementation(() => {});
+    (api.sendMsg as jest.Mock).mockImplementation(() => { });
 
     const inputElement = screen.getByPlaceholderText(
       "Type a message... Hit Enter to Send"
@@ -49,7 +48,7 @@ describe("App Component", () => {
     // Additional assertions after the first waitFor block
     await waitFor(() => {
       // Expect the input value to be cleared
-      expect(inputElement.value).toBe("");
+      expect((inputElement as HTMLInputElement).value).toBe("");
       // Add more assertions if needed
     });
   });

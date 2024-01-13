@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 import './ChatInput.scss';
 
-const ChatInput = (props) => {
-    const [inputValue, setInputValue] = useState('')
+interface ChatInputProps {
+    send: (event: KeyboardEvent<HTMLInputElement>) => void;
+}
 
-    const handleKeyDown = (event) => {
+const ChatInput: React.FC<ChatInputProps> = (props) => {
+    const [inputValue, setInputValue] = useState('');
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.keyCode === 13) {
             props.send(event);
             setInputValue('');
         }
-    }
+    };
+
     return (
         <div className='ChatInput'>
             <input
@@ -20,5 +25,6 @@ const ChatInput = (props) => {
             />
         </div>
     );
-}
+};
+
 export default ChatInput;
